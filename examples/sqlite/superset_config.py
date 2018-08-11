@@ -1,7 +1,6 @@
 import os
 
 MAPBOX_API_KEY = os.getenv('MAPBOX_API_KEY', '')
-MAPBOX_API_KEY = 'pk.eyJ1IjoiZGFubnllbGNmIiwiYSI6ImNqa21zMXFjYzAxYnczcG55ejlmc3M2YW0ifQ.1MuERshcsppKphhii357hg'
 CACHE_CONFIG = {
     'CACHE_TYPE': 'redis',
     'CACHE_DEFAULT_TIMEOUT': 300,
@@ -40,8 +39,6 @@ from flask_login import login_user, logout_user
 
 # Based on https://medium.com/@sairamkrish/apache-superset-custom-authentication-and-integrate-with-other-micro-services-8217956273c1
 class CustomAuthDBView(AuthDBView):
-    login_template = 'appbuilder/general/security/login_db.html'
-
     @expose('/login/', methods=['GET', 'POST'])
     def login(self):
         redirect_url = self.appbuilder.get_url_for_index
@@ -58,9 +55,13 @@ class CustomAuthDBView(AuthDBView):
         elif g.user is not None and g.user.is_authenticated():
             return redirect(redirect_url)
         else:
-            message = Markup('The following link will auto login as admin: <a href="http://localhost:8088/login?username=admin&redirect=/superset/welcome">link</a>')
-            flash(message, 'warning')
-            return super(CustomAuthDBView,self).login()
+            return """
+                <html>
+                  <body>
+                    <a href="http://localhost:8088/login?username=admin&redirect=/superset/welcome">This link will auto login as admin</a>
+                  <body>
+                <html>
+            """
 
 class CustomSecurityManager(SupersetSecurityManager):
     authdbview = CustomAuthDBView
