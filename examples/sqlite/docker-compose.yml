@@ -17,6 +17,7 @@ services:
       - "8088:8088"
     volumes:
       - ./superset_config.py:/etc/superset/superset_config.py
+      - ./customs:/etc/superset/customs
       - ./superset:/var/lib/superset
 volumes:
   redis:

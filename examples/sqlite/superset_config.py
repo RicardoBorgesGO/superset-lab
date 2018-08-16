@@ -16,86 +16,16 @@ PUBLIC_ROLE_LIKE_GAMMA = True
 
 #-------------------------------------------------------------------------------
 
-from flask import Blueprint
-from flask import g
-
-test = Blueprint('test', __name__, template_folder='templates')
-
-@test.route('/', defaults={'page': 'index'})
-@test.route('/<page>')
-def show(page):    
-    return page    
-
-BLUEPRINTS = [test]
+from customs.analisa.blueprint import analisa
+BLUEPRINTS = [analisa]
 
 #-------------------------------------------------------------------------------
 
-from flask import redirect, g, flash, request, Markup
-from flask_appbuilder.security.views import UserDBModelView,AuthDBView
-from superset.security import SupersetSecurityManager
-from flask_appbuilder.security.views import expose
-from flask_appbuilder.security.manager import BaseSecurityManager
-from flask_login import login_user, logout_user
-
-# Based on https://medium.com/@sairamkrish/apache-superset-custom-authentication-and-integrate-with-other-micro-services-8217956273c1
-class CustomAuthDBView(AuthDBView):
-    @expose('/login/', methods=['GET', 'POST'])
-    def login(self):
-        redirect_url = self.appbuilder.get_url_for_index
-        if request.args.get('redirect') is not None:
-            redirect_url = request.args.get('redirect')
-        
-        print(redirect_url)
-        print(request.args.get('username'))
-
-        if request.args.get('username') is not None:
-            user = self.appbuilder.sm.find_user(username=request.args.get('username'))
-            login_user(user, remember=False)
-            return redirect(redirect_url)
-        elif g.user is not None and g.user.is_authenticated():
-            return redirect(redirect_url)
-        else:
-            return """
-                <html>
-                  <body>
-                    <a href="http://localhost:8088/login?username=admin&redirect=/superset/welcome">This link will auto login as admin</a>
-                  <body>
-                <html>
-            """
-
-class CustomSecurityManager(SupersetSecurityManager):
-    authdbview = CustomAuthDBView
-    def __init__(self, appbuilder):
-        super(CustomSecurityManager, self).__init__(appbuilder)
-
+from customs.analisa.security import CustomSecurityManager
 CUSTOM_SECURITY_MANAGER = CustomSecurityManager
 
 #-------------------------------------------------------------------------------
 
-def test(app):
-    from flask_appbuilder.baseviews import expose_api
-    from flask_appbuilder.security.decorators import has_access_api
-    from flask_babel import gettext as __
-    from superset import appbuilder
-    from superset.views.core import BaseSupersetView
-
-    class TestView(BaseSupersetView):
-        @expose_api(name='api', url='/api/refresh', methods=['GET'])
-        @expose_api(name='api', url='/api/refresh/<project_id>', methods=['GET'])
-        @has_access_api
-        def refresh(self, project_id=None):
-            pass
-
-    appbuilder.add_view(
-      TestView,
-      'Test',
-      label=__('Test'),
-      href='/test',
-      icon='fa-refresh',
-      category='',
-      category_icon='fa-database')
-
-    print("Created 'Test' menu.")
-
-FLASK_APP_MUTATOR = test
+from customs.analisa.app_mutator import mutator
+FLASK_APP_MUTATOR = mutator
 
