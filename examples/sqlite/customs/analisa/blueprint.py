@@ -1,9 +1,9 @@
-from flask import Blueprint
-from flask import g
+from flask import Blueprint, render_template
 
-analisa = Blueprint('analisa', __name__, template_folder='templates')
+saiku = Blueprint('saiku', __name__, template_folder='templates')
 
-@analisa.route('/analisa/', defaults={'page': 'index'})
-@analisa.route('/analisa/<page>')
+@saiku.route('/saiku/', defaults={'page': 'index'})
+@saiku.route('/saiku/<page>')
 def show(page):    
-    return page
+    from superset import appbuilder
+    return render_template('saiku/saiku.html', appbuilder=appbuilder)

@@ -16,8 +16,8 @@ PUBLIC_ROLE_LIKE_GAMMA = True
 
 #-------------------------------------------------------------------------------
 
-from customs.analisa.blueprint import analisa
-BLUEPRINTS = [analisa]
+from customs.analisa.blueprint import saiku
+BLUEPRINTS = [saiku]
 
 #-------------------------------------------------------------------------------
 
