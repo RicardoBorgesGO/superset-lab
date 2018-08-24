@@ -16,21 +16,25 @@ PUBLIC_ROLE_LIKE_GAMMA = True
 
 #-------------------------------------------------------------------------------
 
+print("Loading ADDITIONAL_MIDDLEWARE...")
 from customs.analisa.middleware import ReverseProxied
 ADDITIONAL_MIDDLEWARE = [ReverseProxied, ]
 
 #-------------------------------------------------------------------------------
 
+print("Loading BLUEPRINTS...")
 from customs.analisa.blueprint import saiku
 BLUEPRINTS = [saiku]
 
 #-------------------------------------------------------------------------------
 
-from customs.analisa.security import CustomSecurityManager
-CUSTOM_SECURITY_MANAGER = CustomSecurityManager
+print("Loading CUSTOM_SECURITY_MANAGER...")
+from customs.analisa.security import CasCustomSecurityManager
+CUSTOM_SECURITY_MANAGER = CasCustomSecurityManager
 
 #-------------------------------------------------------------------------------
 
+print("Loading FLASK_APP_MUTATOR...")
 from customs.analisa.app_mutator import mutator
 FLASK_APP_MUTATOR = mutator
 

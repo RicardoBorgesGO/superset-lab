@@ -1,12 +1,12 @@
+# Prefix URLs
+# https://github.com/apache/incubator-superset/pull/1866#issuecomment-347310860
 class ReverseProxied(object):
  
    def __init__(self, app):
-        self.app = app
-        print("######### teste #############")
+        self.app = app  
+        print("Loading ReverseProxied..")      
 
-   def __call__(self, environ, start_response):
-       print(environ)
-       print("teste @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@")
+   def __call__(self, environ, start_response):       
        script_name = environ.get('HTTP_X_SCRIPT_NAME', '')
        if script_name:
            environ['SCRIPT_NAME'] = script_name
