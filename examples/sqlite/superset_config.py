@@ -16,6 +16,11 @@ PUBLIC_ROLE_LIKE_GAMMA = True
 
 #-------------------------------------------------------------------------------
 
+from customs.analisa.middleware import ReverseProxied
+ADDITIONAL_MIDDLEWARE = [ReverseProxied, ]
+
+#-------------------------------------------------------------------------------
+
 from customs.analisa.blueprint import saiku
 BLUEPRINTS = [saiku]
 

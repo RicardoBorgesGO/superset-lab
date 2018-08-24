@@ -12,3 +12,25 @@ CACHE_CONFIG = {
 SQLALCHEMY_DATABASE_URI = 'mysql://superset:superset@mysql:3306/superset'
 SQLALCHEMY_TRACK_MODIFICATIONS = True
 SECRET_KEY = 'thisISaSECRET_1234'
+PUBLIC_ROLE_LIKE_GAMMA = True
+
+#-------------------------------------------------------------------------------
+
+from customs.analisa.middleware import ReverseProxied
+ADDITIONAL_MIDDLEWARE = [ReverseProxied, ]
+
+#-------------------------------------------------------------------------------
+
+from customs.analisa.blueprint import saiku
+BLUEPRINTS = [saiku]
+
+#-------------------------------------------------------------------------------
+
+from customs.analisa.security import CustomSecurityManager
+CUSTOM_SECURITY_MANAGER = CustomSecurityManager
+
+#-------------------------------------------------------------------------------
+
+from customs.analisa.app_mutator import mutator
+FLASK_APP_MUTATOR = mutator
+
